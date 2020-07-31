@@ -40,10 +40,7 @@ void WriteValuesToFile(const std::vector<int>& numbers, const std::string& filep
 	file << numbers.back();
 }
 
-Edge* CreateEdge(std::string _edges){
-
-	std::cout << "i am here" << std::endl;
-
+Edge CreateEdge(std::string _edges){
 	std::istringstream ss(_edges);
 
 	std::string substr;
@@ -55,7 +52,6 @@ Edge* CreateEdge(std::string _edges){
 	int index = 0;
 	while (getline(ss, substr, '\t'))
 	{
-		std::cout << substr << '\n' << std::endl;
 		if (index == 0)
 		{
 			point1 = substr;
@@ -74,7 +70,7 @@ Edge* CreateEdge(std::string _edges){
 		index++;
 	}
 
-	Edge *edge = new Edge(point1, point2, cost);
+	Edge edge = Edge(point1, point2, cost);
 
 	return edge;
 }
@@ -87,29 +83,27 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	std::vector<std::string> edges;
+	std::vector<std::string> edgesString;
 	std::vector<std::string> nodes;
 
-	ReadValuesFromFile(argv[1], nodes, edges);
+	ReadValuesFromFile(argv[1], nodes, edgesString);
 
 	auto start = std::chrono::steady_clock::now();
 
-	for (int i = 0; i < nodes.size(); i++)
+	std::vector<Edge> edges;
+
+	for (int i = 0; i < (int)edgesString.size(); i++)
 	{
-		std::cout << nodes[i] << std::endl;
+		edges.push_back(CreateEdge(edgesString[i]));
 	}
 
-	for (int i = 0; i < edges.size(); i++)
+	for (int i = 0; i < (int)edges.size(); i++)
 	{
-		std::cout << edges[i] << std::endl;
+		std::cout << "Point1; " << edges[i].getP1() << "   " << "Point2; " << edges[i].getP2() << "  Cost: " << edges[i].getCost() << std::endl;
 	}
+		
 
 
-	Edge* edge1 = CreateEdge(edges[1]);
-
-	std::cout << "Edges cost = " << edge1->getCost() << std::endl;
-	std::cout << "Edges point1 = " << edge1->getP1() << std::endl;
-	std::cout << "Edges point2 = " << edge1->getP2() << std::endl;
 
 	/*
 	switch (argv[2][0])
