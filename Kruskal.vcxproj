@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="Disjset.h" />
     <ClInclude Include="Edge.h" />
+    <ClInclude Include="Main.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

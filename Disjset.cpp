@@ -3,64 +3,63 @@
 
 
 Disjset::Disjset()
-	: m_setCount(0)
+	: forestSetCount(0)
 {
 
 }
 
 Disjset::Disjset(const std::map<std::string, std::string>& initialElements)
-	: m_setCount(0)
+	: forestSetCount(0)
 {	
-	add_element(initialElements);
+	addElement(initialElements);
 }
 
 
-void Disjset::add_element(const std::map<std::string, std::string>& elements)
+void Disjset::addElement(const std::map<std::string, std::string>& elements)
 {
     for (typename std::map<std::string, std::string>::const_iterator it = elements.begin(), iend = elements.end(); it != iend; ++it)
     {
-        m_elements.insert(std::make_pair(it->first, Element(it->second, it->first)));
+        m_elements.insert(std::make_pair(it->first, NodeElement(it->second, it->first)));
     }
-    m_setCount += elements.size();
+    forestSetCount += elements.size();
 }
 
-void Disjset::add_element(std::string x, const std::string& value)
+void Disjset::addElement(std::string x, const std::string& value)
 {
-    m_elements.insert(std::make_pair(x, Element(value, x)));
-    ++m_setCount;
+    m_elements.insert(std::make_pair(x, NodeElement(value, x)));
+    ++forestSetCount;
 }
 
-int Disjset::element_count() const
+int Disjset::amountOfNodeElements() const
 {
     return static_cast<int>(m_elements.size());
 }
 
-std::string Disjset::find_set(std::string x) const
+std::string Disjset::findParentForNode(std::string node) const
 {
-    Element& element = get_element(x);
+    NodeElement& element = getElement(node);
     std::string& parent = element.parent;
-    if (parent != x)
+    if (parent != node)
     {
-        parent = find_set(parent);
+        parent = findParentForNode(parent);
     }
     return parent;
 }
 
 int Disjset::getSetCount() const
 {
-    return m_setCount;
+    return forestSetCount;
 }
 
-void Disjset::union_sets(std::string x, std::string y)
+void Disjset::unionSets(std::string node1, std::string node2)
 {
-    std::string setX = find_set(x);
-    std::string setY = find_set(y);
-    if (setX != setY) link(setX, setY);
-}
+    std::string setNode1 = findParentForNode(node1);
+    std::string setNode2 = findParentForNode(node2);
 
-std::string& Disjset::value_of(std::string x)
-{
-    return get_element(x).value;
+    if (setNode1 != setNode2)
+    {
+        bind(setNode1, setNode2);
+    }
 }
 
 

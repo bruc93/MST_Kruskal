@@ -6,10 +6,32 @@
 #include "Edge.h"
 #include <sstream>
 #include "Disjset.h"
+#include <queue>
+#include "Main.h"
 
+void writeAnswerFile(std::vector<std::string>& nodes, std::vector<Edge>& mst)
+{
+	std::ofstream myfile("Answer.txt");
+
+	if (myfile.is_open())
+	{
+		for (int i = 0; i < nodes.size(); i++)
+		{
+			myfile << nodes[i] << "\n";
+		}
+		myfile << "\n";
+		for (int i = 0; i < mst.size(); i++)
+		{
+			myfile << mst[i].toString() << "\n";
+		}
+		myfile.close();
+	}
+	else std::cout << "Unable to open file";
+}
 
 void ReadValuesFromFile(const std::string& filepath, std::vector<std::string> &nodes, std::vector<std::string> &edges)
 {
+	//std::string filepath = "Nodes2.txt";
 	std::ifstream file(filepath);
 	std::string info;
 	bool foundSpace = false;
@@ -29,16 +51,6 @@ void ReadValuesFromFile(const std::string& filepath, std::vector<std::string> &n
 			edges.push_back(info);
 		}
 	}
-}
-
-void WriteValuesToFile(const std::vector<int>& numbers, const std::string& filepath = "Answer.txt")
-{
-	std::ofstream file(filepath);
-
-	for (std::vector<int>::size_type i = 0; i < numbers.size() - 1; ++i)
-		file << numbers[i] << std::endl;
-
-	file << numbers.back();
 }
 
 Edge CreateEdge(std::string _edges){
@@ -76,9 +88,48 @@ Edge CreateEdge(std::string _edges){
 	return edge;
 }
 
+std::vector<Edge> kruskal(std::vector<Edge> edges, std::vector<std::string> nodes)
+{
+	Disjset ds;
+	//init ds with the nodes
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		ds.addElement(nodes[i],nodes[i]);
+	}
+
+	std::priority_queue<Edge, std::vector<Edge>, std::greater<Edge>> pq;
+
+	for (int i = 0; i < edges.size();i++) 
+	{
+		pq.push(edges[i]);
+	}
+
+	std::vector<Edge> mst;
+
+	while (mst.size() != nodes.size()-1)
+	{
+		Edge e = pq.top();
+
+		std::string p1set = ds.findParentForNode(e.getP1());
+		std::string p2set = ds.findParentForNode(e.getP2());
+
+		if(p1set != p2set)
+		{
+			//Accept the edge!
+			mst.push_back(e);
+			ds.unionSets(p1set, p2set);
+
+		}
+
+		pq.pop();
+	}
+
+	return mst;
+}
+
 int main(int argc, char** argv)
 {
-	if (argc < 0)
+	if (argc < 2)
 	{
 		std::cout << "To few arguments" << std::endl;
 		return -1;
@@ -98,59 +149,23 @@ int main(int argc, char** argv)
 		edges.push_back(CreateEdge(edgesString[i]));
 	}
 
-	for (int i = 0; i < (int)edges.size(); i++)
+	std::vector<Edge> mst = kruskal(edges, nodes);
+
+	writeAnswerFile(nodes, mst);
+
+	std::cout << "-------------- MST --------------------" << std::endl;
+
+	for (int i = 0; i < mst.size(); i++)
 	{
-		std::cout << "Point1; " << edges[i].getP1() << "   " << "Point2; " << edges[i].getP2() << "  Cost: " << edges[i].getCost() << std::endl;
-	}
-
-
-	Disjset ds;
-
-
-	for (int i = 0; i < nodes.size(); i++)
-	{
-		ds.add_element(nodes[i], nodes[i]);
-	}
-
-
-
-
-
-
-	std::cout << "parent for node 1 : " << ds.find_set(nodes[1]) << std::endl;
-	ds.union_sets(nodes[1], nodes[3]);
-	std::cout << "parent for node 1 : " << ds.find_set(nodes[1]) << std::endl;
-	std::cout << "element count : " << ds.getSetCount() << std::endl;
-
-	/*
-	switch (argv[2][0])
-	{
-	case '1':
-		std::cout << "Running MergeSort...\n";
-		funcSort.mergeSort(numbers);
-		WriteValuesToFile(numbers, "OutputFile1.txt");
-		break;
-	case '2':
-		std::cout << "Running HeapSort...\n";
-		funcSort.heapSort(numbers);
-		WriteValuesToFile(numbers, "OutputFile2.txt");
-		break;
-	case '3':
-		std::cout << "Running Quicksort...\n";
-		funcSort.quickSort(numbers);
-		WriteValuesToFile(numbers, "OutputFile3.txt");
-		break;
-	default:
-		std::cout << "Incorrect argument for choosing the sorting algorithm!" << std::endl;
-		std::cout << "Aborting process!" << std::endl;
-		return -1;
+		std::cout << "point 1: " << mst[i].getP1() << " Point2: " << mst[i].getP2() << " Cost: " << mst[i].getCost() << std::endl;
 	}
 
 	auto end = std::chrono::steady_clock::now();
 	std::chrono::duration<double> elapsed_seconds = end - start;
 	std::cout << "Sorting took: " << elapsed_seconds.count() << " seconds" << std::endl;
-	*/
 
 	return 0;
 }
+
+
 

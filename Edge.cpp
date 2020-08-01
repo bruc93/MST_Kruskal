@@ -24,6 +24,22 @@ int Edge::getCost() const
 	return cost;
 }
 
+bool Edge::operator>(const Edge& other) const
+{
+	return this->cost > other.getCost();
+}
+
+bool Edge::operator<(const Edge& other) const
+{
+	return this->cost < other.getCost();
+}
+
+std::string Edge::toString()
+{
+	std::string info = this->point1 + "	" + this->point2 + "	" + std::to_string(this->cost);
+	return info;
+}
+
 
 
 
