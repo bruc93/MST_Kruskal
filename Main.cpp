@@ -5,6 +5,7 @@
 #include <chrono>
 #include "Edge.h"
 #include <sstream>
+#include "Disjset.h"
 
 
 void ReadValuesFromFile(const std::string& filepath, std::vector<std::string> &nodes, std::vector<std::string> &edges)
@@ -101,9 +102,25 @@ int main(int argc, char** argv)
 	{
 		std::cout << "Point1; " << edges[i].getP1() << "   " << "Point2; " << edges[i].getP2() << "  Cost: " << edges[i].getCost() << std::endl;
 	}
-		
 
 
+	Disjset ds;
+
+
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		ds.add_element(nodes[i], nodes[i]);
+	}
+
+
+
+
+
+
+	std::cout << "parent for node 1 : " << ds.find_set(nodes[1]) << std::endl;
+	ds.union_sets(nodes[1], nodes[3]);
+	std::cout << "parent for node 1 : " << ds.find_set(nodes[1]) << std::endl;
+	std::cout << "element count : " << ds.getSetCount() << std::endl;
 
 	/*
 	switch (argv[2][0])
