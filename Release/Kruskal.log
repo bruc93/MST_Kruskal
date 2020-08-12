@@ -1,0 +1,12 @@
+﻿  Main.cpp
+C:\Users\Alexander\Desktop\DV1538 Algoritmer\PROJEKT ARBETET\Kruskal\Disjset.h(38,15): warning C4101: 'e': unreferenced local variable
+C:\Users\Alexander\Desktop\DV1538 Algoritmer\PROJEKT ARBETET\Kruskal\Main.cpp(18,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Alexander\Desktop\DV1538 Algoritmer\PROJEKT ARBETET\Kruskal\Main.cpp(23,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Alexander\Desktop\DV1538 Algoritmer\PROJEKT ARBETET\Kruskal\Main.cpp(94,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Alexander\Desktop\DV1538 Algoritmer\PROJEKT ARBETET\Kruskal\Main.cpp(102,20): warning C4018: '<': signed/unsigned mismatch
+  Generating code
+  0 of 531 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Kruskal.vcxproj -> C:\Users\Alexander\Desktop\DV1538 Algoritmer\PROJEKT ARBETET\Kruskal\Release\Kruskal.exe

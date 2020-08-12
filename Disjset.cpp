@@ -8,13 +8,6 @@ Disjset::Disjset()
 
 }
 
-Disjset::Disjset(const std::map<std::string, std::string>& initialElements)
-	: forestSetCount(0)
-{	
-	addElement(initialElements);
-}
-
-
 void Disjset::addElement(const std::map<std::string, std::string>& elements)
 {
     for (typename std::map<std::string, std::string>::const_iterator it = elements.begin(), iend = elements.end(); it != iend; ++it)
@@ -38,11 +31,14 @@ int Disjset::amountOfNodeElements() const
 std::string Disjset::findParentForNode(std::string node) const
 {
     NodeElement& element = getElement(node);
+
     std::string& parent = element.parent;
+
     if (parent != node)
     {
         parent = findParentForNode(parent);
     }
+
     return parent;
 }
 

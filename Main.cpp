@@ -31,7 +31,6 @@ void writeAnswerFile(std::vector<std::string>& nodes, std::vector<Edge>& mst)
 
 void ReadValuesFromFile(const std::string& filepath, std::vector<std::string> &nodes, std::vector<std::string> &edges)
 {
-	//std::string filepath = "Nodes2.txt";
 	std::ifstream file(filepath);
 	std::string info;
 	bool foundSpace = false;
@@ -96,6 +95,7 @@ std::vector<Edge> kruskal(std::vector<Edge> edges, std::vector<std::string> node
 	{
 		ds.addElement(nodes[i],nodes[i]);
 	}
+	
 
 	std::priority_queue<Edge, std::vector<Edge>, std::greater<Edge>> pq;
 
@@ -109,7 +109,6 @@ std::vector<Edge> kruskal(std::vector<Edge> edges, std::vector<std::string> node
 	while (mst.size() != nodes.size()-1)
 	{
 		Edge e = pq.top();
-
 		std::string p1set = ds.findParentForNode(e.getP1());
 		std::string p2set = ds.findParentForNode(e.getP2());
 
@@ -118,7 +117,6 @@ std::vector<Edge> kruskal(std::vector<Edge> edges, std::vector<std::string> node
 			//Accept the edge!
 			mst.push_back(e);
 			ds.unionSets(p1set, p2set);
-
 		}
 
 		pq.pop();
@@ -135,12 +133,12 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
+	auto start = std::chrono::steady_clock::now();
 	std::vector<std::string> edgesString;
 	std::vector<std::string> nodes;
 
 	ReadValuesFromFile(argv[1], nodes, edgesString);
 
-	auto start = std::chrono::steady_clock::now();
 
 	std::vector<Edge> edges;
 
@@ -148,22 +146,15 @@ int main(int argc, char** argv)
 	{
 		edges.push_back(CreateEdge(edgesString[i]));
 	}
-
 	std::vector<Edge> mst = kruskal(edges, nodes);
 
 	writeAnswerFile(nodes, mst);
 
-	std::cout << "-------------- MST --------------------" << std::endl;
-
-	for (int i = 0; i < mst.size(); i++)
-	{
-		std::cout << "point 1: " << mst[i].getP1() << " Point2: " << mst[i].getP2() << " Cost: " << mst[i].getCost() << std::endl;
-	}
-
 	auto end = std::chrono::steady_clock::now();
-	std::chrono::duration<double> elapsed_seconds = end - start;
-	std::cout << "Sorting took: " << elapsed_seconds.count() << " seconds" << std::endl;
 
+	std::chrono::duration<double> elapsed_seconds = end - start;
+	std::cout << "-------------- MST --------------------" << std::endl;
+	std::cout << "MST took: " << elapsed_seconds.count() << " seconds" << std::endl;
 	return 0;
 }
 

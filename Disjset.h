@@ -7,6 +7,7 @@
 class Disjset
 {
 private:
+
 	struct NodeElement
 	{
 		std::string value;
@@ -45,8 +46,10 @@ private:
 	{
 		NodeElement& elementNode1 = getElement(node1);
 		NodeElement& elementNode2 = getElement(node2);
+
 		int& rankNode1 = elementNode1.rank;
 		int& rankNode2 = elementNode2.rank;
+
 		if (rankNode1 > rankNode2)
 		{
 			elementNode2.parent = node1;
@@ -56,12 +59,12 @@ private:
 			elementNode1.parent = node2;
 			if (rankNode1 == rankNode2) ++rankNode2;
 		}
+
 		--forestSetCount;
 	}
 
 public:
 	Disjset();
-	explicit Disjset(const std::map<std::string, std::string>& initialElements);
 	void addElement(const std::map<std::string, std::string>&);
 	void addElement(std::string x, const std::string& value);
 	int amountOfNodeElements() const;
